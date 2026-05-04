@@ -656,8 +656,21 @@ void Arena::run()
             int radar_dir = 0;
             lr.robot->get_radar_direction(radar_dir);
             std::vector<RadarObj> hits = radar_scan(static_cast<int>(i), radar_dir);
-            std::cout << "    radar dir=" << radar_dir
-                      << " saw " << hits.size() << " object(s)\n";
+            std::cout << "    radar dir=" << radar_dir << " returned ";
+            if (hits.empty())
+            {
+                std::cout << "nothing";
+            }
+            else
+            {
+                for (size_t h = 0; h < hits.size(); ++h)
+                {
+                    if (h > 0) std::cout << ", ";
+                    std::cout << hits[h].m_type
+                              << " at " << hits[h].m_row << "," << hits[h].m_col;
+                }
+            }
+            std::cout << "\n";
             lr.robot->process_radar_results(hits);
 
             int shot_r = 0, shot_c = 0;
